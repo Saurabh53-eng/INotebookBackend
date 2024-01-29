@@ -9,6 +9,7 @@ let fetchuser = require('../middleware/fetchuser')
 
 const secret = "harryisgoodboy";
 
+
 // Create a user using POST '/api/routes'. Dosen't require login
 router.post('/createuser', [
     body('email', 'Enter a valid Email').isEmail(),
