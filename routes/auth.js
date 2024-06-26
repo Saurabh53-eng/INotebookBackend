@@ -5,24 +5,20 @@ const { body, check, validationResult } = require('express-validator');
 var bcrypt = require('bcryptjs');
 var jwt = require('jsonwebtoken');
 let fetchuser = require('../middleware/fetchuser')
+// const Token = require("../models/token");
 
-const secret = "sp@cEs123";
 
 // Create a user using POST '/api/routes'. Dosen't require login
 router.post('/createuser', [
     body('email', 'Enter a valid Email').isEmail(),
     body('name', 'Enter a valid name').isLength({ min: 3 }),
     body('password', 'Password must be of atleast 4 characters').isLength({ min: 4 }),
-    check('cpassword', 'Password must be of atleast 4 characters').isLength({ min: 4 }).custom((value, { req }) => {
-        if (value != req.body.password) {
-            console.log("Password did not match");
-        } else {
-            return value;
-        }
-    }),
+    body('cpassword', 'Password must be of atleast 4 characters').isLength({ min: 4 }),
 ],
     async (req, res) => {
+
         let success = false;
+
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             return res.status(400).json({ validationErrors: errors.array() });
@@ -30,9 +26,26 @@ router.post('/createuser', [
         try {
             // check whether user with this email already exist
             let user = await User.findOne({ email: req.body.email })
+            // if (req.body.cpassword != req.body.password) {
+            //     return res.status(400).json({ success, error: "Password didn't match" });
+            // }
             if (user) {
                 return res.status(400).json({ success, error: "A user with this email already exist" });
             }
+            // if (!user.verified) {
+            //     let token = await Token.findOne({ userId: user._id })
+            //     if (!token) {
+            //         token = await new Token({
+            //             userId: user._id,
+            //             token: crypto.randomBytes(32).toString("hex")
+            //         }).save();
+
+            //         const url = `${process.env.BASE_URL}/users/${user._id}/verify/${token.token}`;
+            //         await sendEmail(user.email, "verify email", url)
+            //     }
+            //     return res.status(400).send({ message: 'An Email sent to your account please verify' })
+            // }
+
             var salt = bcrypt.genSaltSync(10);
             const secPass = bcrypt.hashSync(req.body.password, salt);
 
@@ -46,7 +59,7 @@ router.post('/createuser', [
                     id: user.id
                 }
             }
-            var authtoken = jwt.sign(data, secret);
+            var authtoken = jwt.sign(data, process.env.secret);
             success = true;
             res.send({ success, authtoken })
         } catch (error) {
@@ -82,7 +95,7 @@ router.post('/login', [
                 id: user.id
             }
         }
-        var authtoken = jwt.sign(data, secret);
+        var authtoken = jwt.sign(data, process.env.secret);
         success = true;
         res.json({ success, authtoken })
     } catch (error) {

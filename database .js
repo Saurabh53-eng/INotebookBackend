@@ -1,9 +1,8 @@
 const mongoose = require('mongoose');
-DB="mongodb+srv://bandsaurabh:iUrmgs2PMw9XloCw@cluster0.bjvzk.mongodb.net/?retryWrites=true&w=majority"
 
 const connectToMongo = () => {
     try {
-        mongoose.connect(DB, { dbName: 'INotebook', }).then(() => {
+        mongoose.connect(process.env.DB, { dbName: 'INotebook', }).then(() => {
             console.log("Connected to mongodb Successfully");
         });
     } catch (error) {
