@@ -7,7 +7,7 @@ connectToMongo();
 
 
 const app = express();
-app.use((
+app.use(cors(
     {
         origin: ["https://i-notebook-frontend-zeta.vercel.app/login"],
         methods: ["POST", "GET", "PUT", "DELETE"],
