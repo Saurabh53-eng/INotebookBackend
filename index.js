@@ -1,12 +1,16 @@
 const express = require('express');
 const connectToMongo = require('./database');
 var cors = require('cors');
+const cookieParser = require('cookie-parser');
 require("dotenv").config();
 
 connectToMongo();
 
 
 const app = express();
+
+app.use(express.json());// to accept json data
+app.use(cookieParser);
 app.use(cors(
     {
         origin: ["https://i-notebook-frontend-zeta.vercel.app/login"],
@@ -15,7 +19,7 @@ app.use(cors(
     }
 ));
 
-app.use(express.json());// to accept json data
+
 app.get("/", (req, res) => {
     res.json("Hello")
 })
