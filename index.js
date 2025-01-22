@@ -8,7 +8,7 @@ connectToMongo();
 
 const app = express();
 app.use(cors({
-    origin:["i-notebook-backend-five.vercel.app"],
+    origin:["https://i-notebook-backend-five.vercel.app/"],
     methods:["POST","GET"],
     credentials:true
 }))
