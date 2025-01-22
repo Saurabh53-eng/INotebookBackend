@@ -7,7 +7,11 @@ connectToMongo();
 
 
 const app = express();
-
+app.use(cors({
+    origin:["i-notebook-backend-five.vercel.app"],
+    methods:["POST","GET"],
+    credentials:true
+}))
 app.use(express.json());// to accept json data
 
 
