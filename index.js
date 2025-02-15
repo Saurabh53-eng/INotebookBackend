@@ -5,7 +5,7 @@ const app = express();
 
 // Enable CORS for all routes
 app.use(cors({
-    origin: 'http://localhost:3000', // Allow requests from this origin
+    origin: 'https://warm-lokum-cefe65.netlify.app', // Allow requests from this origin
     methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allow specific HTTP methods
     credentials: true, // Allow cookies and credentials (if needed)
 }));
@@ -13,7 +13,6 @@ app.use(cors({
 require("dotenv").config();
 
 connectToMongo();
-
 
 app.use(express.json());// to accept json data
 
