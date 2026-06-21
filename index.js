@@ -18,7 +18,7 @@ app.use(express.json());// to accept json data
 
 
 app.get("/", (req, res) => {
-    res.json("Hello")
+    res.json("Hiiiiii")
 })
 //Available Routes
 app.use('/api/auth', require('./routes/auth'))
